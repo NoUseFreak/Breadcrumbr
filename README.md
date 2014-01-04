@@ -35,4 +35,4 @@ See also the list of [contributors](https://github.com/NoUseFreak/Breadcrumbr/co
 
 ## License
 
-Notifier is licensed under the MIT license.
+This project is licensed under the MIT license.
