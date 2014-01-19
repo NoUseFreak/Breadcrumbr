@@ -16,5 +16,35 @@ namespace Breadcrumbr\Context;
  */
 class Context implements ContextInterface
 {
+    /**
+     * @var mixed[]
+     */
+    protected $context = array();
 
+    /**
+     * @param string $name
+     * @param mixed[] $context
+     */
+    public function setContext($name, $context)
+    {
+        $this->context[$name] = $context;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getContext($name)
+    {
+        return $this->context[$name];
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasContext($name)
+    {
+        return isset($this->context[$name]);
+    }
 }
