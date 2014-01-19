@@ -4,8 +4,33 @@ Breadcrumbr
 Breadcrumbr, breadcrumb logic helpers.
 
 ## Usage
-```php
 
+In it's very basic form.
+```php
+$breadcrumb = new \Breadcrumbr\Breadcrumb();
+$breadcrumb->addCrumb(new \Breadcrumbr\Crumb\Crumb());
+
+foreach ($breadcrumb as $crumb) {
+    // Render the crumb
+}
+```
+
+Adding resolvers.
+```php
+$breadcrumb->addResolver(new EnvResolver());
+
+// render
+```
+
+Adding more context to the resolvers.
+```php
+$context = new \Breadcrumbr\Context\Context();
+$context->addContext('menu', $menuInfo);
+
+$breadcrumb->setContext($context);
+$breadcrumb->addResolver(new MenuResolver());
+
+// render
 ```
 
 ## Contributing
