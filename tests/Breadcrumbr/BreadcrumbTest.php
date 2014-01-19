@@ -10,6 +10,8 @@
 namespace Breadcrumbr;
 
 use Breadcrumbr\Crumb\Crumb;
+use Stubs\ArrayResolver;
+use Stubs\NullResolver;
 
 /**
  * Breadcrumb.
@@ -33,16 +35,47 @@ class BreadcrumbTest extends \PHPUnit_Framework_TestCase
         unset($this->breadcrumb);
     }
 
+    protected function createCrumbArray($size = 10)
+    {
+        $crumbs = array();
+
+        for ($i = 0; $i < $size; $i++) {
+            $crumb = new Crumb();
+            $crumb->setLabel(1);
+            $crumbs[] = $crumb;
+        }
+
+        return $crumbs;
+    }
+
     public function testIterator()
     {
-        $crumb1 = new Crumb();
-        $crumb1->setLabel(1);
-        $crumb2 = new Crumb();
-        $crumb2->setLabel(2);
-        $crumbs = array($crumb1, $crumb2);
+        $crumbs = $this->createCrumbArray();
 
-        $this->breadcrumb->getTrail()->addCrumb($crumbs[0]);
-        $this->breadcrumb->getTrail()->addCrumb($crumbs[1]);
+        foreach ($crumbs as $crumb) {
+            $this->breadcrumb->addCrumb($crumb);
+        }
+
+        foreach ($this->breadcrumb as $index => $crumb) {
+            $this->assertEquals($crumbs[$index], $crumb);
+        }
+    }
+
+    public function testResolver()
+    {
+        $this->breadcrumb->addResolver(new NullResolver());
+
+        $count = 0;
+        foreach ($this->breadcrumb as $item) {
+            $count++;
+        }
+        $this->assertEquals(0, $count);
+    }
+
+    public function testArrayResolver()
+    {
+        $crumbs = $this->createCrumbArray();
+        $this->breadcrumb->addResolver(new ArrayResolver($crumbs));
 
         foreach ($this->breadcrumb as $index => $crumb) {
             $this->assertEquals($crumbs[$index], $crumb);
